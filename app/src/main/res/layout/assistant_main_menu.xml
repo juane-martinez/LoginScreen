@@ -11,7 +11,7 @@
         android:layout_height="226dp"
         android:scaleType="fitStart"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/top_background6" />
@@ -21,10 +21,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="34dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="34dp"
-        android:contentDescription="Botón para iniciar sesión"
         android:background="@null"
+        android:contentDescription="Botón para iniciar sesión"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
@@ -37,8 +37,8 @@
         android:layout_marginStart="33dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="34dp"
-        android:contentDescription="Botón para comprobra medicación"
         android:background="@null"
+        android:contentDescription="Botón para comprobra medicación"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButton"
@@ -51,10 +51,23 @@
         android:layout_marginStart="34dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="33dp"
-        android:contentDescription="Botón para registrar medicación"
         android:background="@null"
+        android:contentDescription="Botón para registrar medicación"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButton2"
         app:srcCompat="@drawable/button_three" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="248dp"
+        android:layout_height="127dp"
+        android:layout_marginStart="81dp"
+        android:layout_marginTop="588dp"
+        android:layout_marginEnd="82dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_pharmabot1" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
