@@ -38,4 +38,7 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation ("com.google.android.gms:play-services-mlkit-text-recognition:19.0.0")
+    implementation ("com.airbnb.android:lottie:4.2.1")
+
 }

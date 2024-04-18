@@ -5,112 +5,101 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/editTextText2"
-        android:layout_width="159dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="236dp"
-        android:layout_marginTop="386dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text="-"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/editTextText3"
-        android:layout_width="159dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="236dp"
-        android:layout_marginTop="457dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text="-"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="431dp"
-        android:layout_height="76dp"
-        android:scaleType="fitXY"
+        android:id="@+id/imageView10"
+        android:layout_width="393dp"
+        android:layout_height="70dp"
+        android:scaleType="fitStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/top_background6"
-        tools:srcCompat="@drawable/top_backg" />
+        app:srcCompat="@drawable/top_backg" />
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="154dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="99dp"
-        android:layout_marginTop="675dp"
-        android:layout_marginEnd="99dp"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnimationView"
+        android:layout_width="54dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="5dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo_pharmabot1" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView10"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="principal.json"
+        app:lottie_imageAssetsFolder="assets"
+        app:lottie_loop="true" />
 
-    <ImageButton
-        android:id="@+id/imageButton6"
-        android:layout_width="184dp"
-        android:layout_height="151dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="524dp"
-        android:background="@null"
-        android:contentDescription="Botón de tomar foto"
-        android:scaleType="centerCrop"
+    <ScrollView
+        android:layout_width="332dp"
+        android:layout_height="561dp"
+        android:layout_marginTop="2dp"
+        android:contentDescription="Contenedor desplazable"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_camera_24"
-        tools:srcCompat="@drawable/tomar_foto" />
+        app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView">
 
-    <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="200dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="306dp"
-        android:contentDescription="Botón medicamento1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/medic_1" />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/LinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/imageView8"
-        android:layout_width="200dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="376dp"
-        android:contentDescription="Botón medicamento 2"
+            <ImageView
+                android:id="@+id/imagen"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:contentDescription="Imagen representativa"
+                android:src="@drawable/fotoimagen" />
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/medic_2" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Texto reconocido:"
+                android:textSize="18sp" />
 
-    <ImageView
-        android:id="@+id/imageView9"
-        android:layout_width="200dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="446dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/medic_3" />
+            <EditText
+                android:id="@+id/TextoReconocidoEt"
+                android:layout_width="332dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="10dp"
+                android:hint=":)" />
 
-    <EditText
-        android:id="@+id/editTextText1"
-        android:layout_width="159dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="236dp"
-        android:layout_marginTop="322dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text="-"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/ReconocerTXT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:backgroundTint="@color/buttons"
+        android:drawableLeft="@drawable/baseline_photo_camera_24"
+        android:text="Tomar Foto"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/EscanearTXT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/buttons"
+        android:drawableLeft="@drawable/baseline_document_scanner_24"
+        android:text="Escanear texto"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/ReconocerTXT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,7 +19,7 @@ import com.google.zxing.integration.android.IntentResult;
 public class MainActivity extends AppCompatActivity {
 
     Button scan_btn;
-
+    Button login_btn;
     TextView textView;
 
     @Override
@@ -40,6 +40,14 @@ public class MainActivity extends AppCompatActivity {
                 intentIntegrator.initiateScan();
             }
         });
+
+        login_btn=findViewById(R.id.button_login);
+       login_btn.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               startActivity(new Intent(MainActivity.this,Assistant_Menu.class ));
+           }
+       });
     }
 
     @Override
