@@ -26,6 +26,10 @@ import com.android.volley.toolbox.Volley;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,32 +78,45 @@ public class MainActivity extends AppCompatActivity {
        });
     }
 
-    private void validarUsuario (String URL){
-        StringRequest stringRequest= new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+    private void validarUsuario(String URL){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (obj.has("error")) {
+                                Toast.makeText(MainActivity.this, obj.getString("error"), Toast.LENGTH_SHORT).show();
+                            } else {
+                                int tipoUsuario = obj.getInt("tipo_usuario");
+                                Intent intent;
+                                if (tipoUsuario == 0) {
+                                    intent = new Intent(getApplicationContext(), Assistant_Menu.class);
+                                } else if (tipoUsuario == 1) {
+                                    intent = new Intent(getApplicationContext(), Boss_Menu.class);
+                                } else {
+                                    throw new IllegalArgumentException("Tipo de usuario no soportado");
+                                }
+                                startActivity(intent);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(MainActivity.this, "Error de parsing: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
             @Override
-            public void onResponse(String response) {
-                if (!response.isEmpty()){
-                    Intent intent = new Intent(getApplicationContext(), Assistant_Menu.class);
-                    startActivity(intent);
-                }else{
-                    Toast.makeText(MainActivity.this, "Usuario o Contraseña incorrectos", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(MainActivity.this, volleyError.toString(), Toast.LENGTH_SHORT).show();
-                Log.e("MainActivity", volleyError.toString());
-
-
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+                Log.e("MainActivity", error.toString());
             }
         }) {
             @Nullable
             @Override
-            protected Map<String,String> getParams() throws AuthFailureError {
-                Map<String,String> parametros = new HashMap<String,String>();
-                parametros.put("usuario", edtUsuario.getText().toString());
-                parametros.put("password", edtPassword.getText().toString());
+            protected Map<String, String> getParams() {
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("usuario", usuario);
+                parametros.put("password", password);
                 return parametros;
             }
         };
