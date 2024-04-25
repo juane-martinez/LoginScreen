@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode,data);
         if (intentResult !=null){
@@ -137,5 +137,55 @@ public class MainActivity extends AppCompatActivity {
         }else{
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }*/
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (intentResult != null && intentResult.getContents() != null) {
+            String idPaciente = intentResult.getContents();
+            obtenerInformacionPaciente(idPaciente);
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void obtenerInformacionPaciente(String idPaciente) {
+        String url = "http://192.168.20.28/pharmabot/consultaQR.php";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.has("error")) {
+                                Intent intent = new Intent(MainActivity.this, Patient_Information.class);
+                                intent.putExtra("id_paciente", idPaciente); // Pasar el ID del paciente
+                                intent.putExtra("datosPaciente", response);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(MainActivity.this, obj.getString("error"), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(MainActivity.this, "Error de parsing: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this, "Error de red: " + error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("id_paciente", idPaciente);
+                return params;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 }
