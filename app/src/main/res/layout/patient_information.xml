@@ -164,4 +164,40 @@
         app:layout_constraintStart_toEndOf="@+id/textView7"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/fecha_nacimiento"
+        android:layout_width="85dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="285dp"
+        android:layout_marginTop="176dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/signos_vitales"
+        android:layout_width="123dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="241dp"
+        android:layout_marginTop="314dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/diagnostico"
+        android:layout_width="177dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="194dp"
+        android:layout_marginTop="346dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tratamiento"
+        android:layout_width="276dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="105dp"
+        android:layout_marginTop="410dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
