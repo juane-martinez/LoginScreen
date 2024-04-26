@@ -1,13 +1,20 @@
 package com.example.loginscreen;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -15,6 +22,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,18 +31,17 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Medic_Information extends AppCompatActivity {
-
+public class Kardex extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.medic_information);
+        setContentView(R.layout.kardex);
         String idPaciente = getIntent().getStringExtra("id_paciente");
-        obtenerHistoriaClinica(idPaciente);
+        obtenerDatosKardex(idPaciente);
     }
 
-    private void obtenerHistoriaClinica(String idPaciente) {
-        String url = "http://192.168.20.28/pharmabot/historia_clinica.php";
+    private void obtenerDatosKardex(String idPaciente) {
+        String url = "http://192.168.20.28/pharmabot/kardex.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -41,28 +49,31 @@ public class Medic_Information extends AppCompatActivity {
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.has("error")) {
-                                // Actualizar los TextViews con la información recibida
-                                EditText txtFechaCreacion = findViewById(R.id.editTextFechaI);
-                                EditText txtUltimaActualizacion = findViewById(R.id.editTextCama);
-                                EditText txtDiagnostico = findViewById(R.id.editTextMedicamentos);
-                                EditText txtTratamiento = findViewById(R.id.editTextDosis);
+                                EditText txtFechaIngreso = findViewById(R.id.editTextFechaI);
+                                EditText txtCama = findViewById(R.id.editTextCama);
+                                EditText txtMedicamento = findViewById(R.id.editTextMedicamentos);
+                                EditText txtDosis = findViewById(R.id.editTextDosis);
+                                EditText txtVia = findViewById(R.id.editTextVia);
+                                EditText txtHorario = findViewById(R.id.editTextHorario);
 
-                                txtFechaCreacion.setText(obj.getString("fecha_creacion"));
-                                txtUltimaActualizacion.setText(obj.getString("ultima_actualizacion"));
-                                txtDiagnostico.setText(obj.getString("diagnostico"));
-                                txtTratamiento.setText(obj.getString("tratamiento"));
+                                txtFechaIngreso.setText(obj.getString("fecha_ingreso"));
+                                txtCama.setText(obj.getString("cama"));
+                                txtMedicamento.setText(obj.getString("medicamento"));
+                                txtDosis.setText(obj.getString("dosis"));
+                                txtVia.setText(obj.getString("via"));
+                                txtHorario.setText(obj.getString("horario"));
                             } else {
-                                Toast.makeText(Medic_Information.this, obj.getString("error"), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Kardex.this, obj.getString("error"), Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(Medic_Information.this, "Error de parsing: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Kardex.this, "Error de parsing: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Medic_Information.this, "Error de red: " + error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Kardex.this, "Error de red: " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override

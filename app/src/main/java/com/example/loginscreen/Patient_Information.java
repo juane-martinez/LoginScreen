@@ -15,7 +15,7 @@ import org.json.JSONObject;
 public class Patient_Information extends AppCompatActivity {
     EditText nombre, apellido, fechaN, sexo, direccion, telefono;
     ImageButton historiac;
-
+    ImageButton btnKardex;
     String idPaciente;
 
     @Override
@@ -23,10 +23,10 @@ public class Patient_Information extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.patient_information);
 
-        EditText nombre = findViewById(R.id.editTextFechaC);
-        EditText apellido = findViewById(R.id.editTextFechaU);
-        EditText fechaN = findViewById(R.id.editTextDiagnostico);
-        EditText sexo = findViewById(R.id.editTextTratamiento);
+        EditText nombre = findViewById(R.id.editTextFechaI);
+        EditText apellido = findViewById(R.id.editTextCama);
+        EditText fechaN = findViewById(R.id.editTextMedicamentos);
+        EditText sexo = findViewById(R.id.editTextDosis);
         EditText direccion= findViewById(R.id.editTextDireccion);
         EditText telefono = findViewById(R.id.editTextTelefono);
         ImageButton historiac = findViewById(R.id.imageButtonHistoriaC);
@@ -49,6 +49,16 @@ public class Patient_Information extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Patient_Information.this, Medic_Information.class);
+                intent.putExtra("id_paciente", idPaciente);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton btnKardex = findViewById(R.id.imageButtonKardex);
+        btnKardex.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Patient_Information.this, Kardex.class);
                 intent.putExtra("id_paciente", idPaciente);
                 startActivity(intent);
             }

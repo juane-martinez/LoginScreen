@@ -15,7 +15,7 @@
         app:srcCompat="@drawable/information_background" />
 
     <EditText
-        android:id="@+id/editTextTratamiento"
+        android:id="@+id/editTextDosis"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="180dp"
@@ -26,15 +26,17 @@
         android:hint="Tratamiento"
         android:inputType="text"
         android:textColorHint="#3B608c"
+        android:background="@drawable/edittext_background"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDiagnostico" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextMedicamentos" />
 
     <EditText
-        android:id="@+id/editTextDiagnostico"
+        android:id="@+id/editTextMedicamentos"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="180dp"
@@ -45,15 +47,17 @@
         android:hint="Diagnostico"
         android:inputType="text"
         android:textColorHint="#3B608c"
+        android:background="@drawable/edittext_background"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextFechaU" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextCama" />
 
     <EditText
-        android:id="@+id/editTextFechaU"
+        android:id="@+id/editTextCama"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="180dp"
@@ -64,12 +68,14 @@
         android:hint="Última actualización"
         android:inputType="text"
         android:textColorHint="#3B608c"
+        android:background="@drawable/edittext_background"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextFechaC" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextFechaI" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -83,18 +89,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/medic_information" />
 
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="275dp"
-        android:layout_height="96dp"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="200dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTratamiento"
-        app:srcCompat="@drawable/history" />
-
     <EditText
-        android:id="@+id/editTextFechaC"
+        android:id="@+id/editTextFechaI"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="180dp"
@@ -105,8 +101,10 @@
         android:hint="Fecha creación"
         android:inputType="text"
         android:textColorHint="#3B608c"
+        android:background="@drawable/edittext_background"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -119,7 +117,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="25dp"
         android:text="Fecha creación:"
-        app:layout_constraintEnd_toStartOf="@+id/editTextDiagnostico"
+        app:layout_constraintEnd_toStartOf="@+id/editTextMedicamentos"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
@@ -130,7 +128,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="30dp"
         android:text="Fecha última actualización:"
-        app:layout_constraintEnd_toStartOf="@+id/editTextDiagnostico"
+        app:layout_constraintEnd_toStartOf="@+id/editTextMedicamentos"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -141,7 +139,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="30dp"
         android:text="Diagnostico:"
-        app:layout_constraintEnd_toStartOf="@+id/editTextDiagnostico"
+        app:layout_constraintEnd_toStartOf="@+id/editTextMedicamentos"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -152,7 +150,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="30dp"
         android:text="Tratamiento:"
-        app:layout_constraintEnd_toStartOf="@+id/editTextTratamiento"
+        app:layout_constraintEnd_toStartOf="@+id/editTextDosis"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
