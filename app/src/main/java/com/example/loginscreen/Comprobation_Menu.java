@@ -209,7 +209,7 @@ public class Comprobation_Menu extends AppCompatActivity {
     }
 
     private void enviarDatosUbicacion(String latitud, String longitud, String hora) {
-        String url = "http://192.168.20.28/pharmabot/ubicacion.php";
+        String url = "https://pharmabot-lab4.000webhostapp.com/php/ubicacion.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override

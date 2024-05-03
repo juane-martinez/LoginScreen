@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                usuario = edtUsuario.getText().toString();
                password = edtPassword.getText().toString();
                if (!usuario.isEmpty() && !password.isEmpty()){
-                   validarUsuario("https://github.com/juane-martinez/LoginScreen/blob/main/php/validar_usuario.php");
+                   validarUsuario("https://pharmabot-lab4.000webhostapp.com/php/validar_usuario.php");
                }else{
                    Toast.makeText(MainActivity.this, "No se permiten campos vacios", Toast.LENGTH_SHORT).show();
                }
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void obtenerInformacionPaciente(String idPaciente) {
-        String url = "http://192.168.20.28/pharmabot/consultaQR.php";
+        String url = "https://pharmabot-lab4.000webhostapp.com/php/consultaQR.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
