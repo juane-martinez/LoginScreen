@@ -5,7 +5,9 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -31,6 +33,14 @@ import androidx.core.view.WindowInsetsCompat;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -43,7 +53,14 @@ import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Comprobation_Menu extends AppCompatActivity {
@@ -55,6 +72,9 @@ public class Comprobation_Menu extends AppCompatActivity {
     private Uri uri= null;
     private ProgressDialog progressDialog;
     private TextRecognizer textRecognizer;
+    private static final int REQUEST_LOCATION = 1;
+    private FusedLocationProviderClient locationClient;
+    private static final int REQUEST_BACKGROUND_LOCATION = 2;
 
 
     @Override
@@ -69,6 +89,11 @@ public class Comprobation_Menu extends AppCompatActivity {
         progressDialog.setTitle("Espere por favor");
         progressDialog.setCanceledOnTouchOutside(false);
         textRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
+        locationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+        }
         capture_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,6 +109,7 @@ public class Comprobation_Menu extends AppCompatActivity {
                     Toast.makeText(Comprobation_Menu.this, "Por favor seleccione una imagen",Toast.LENGTH_SHORT).show();
                 }else {
                     reconocerTextoDeImagen();
+                    checkPermissionsAndRequestLocation();
                 }
             }
         });
@@ -144,4 +170,92 @@ public class Comprobation_Menu extends AppCompatActivity {
                 }
             }
     );
+
+    private void checkPermissionsAndRequestLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION}, REQUEST_BACKGROUND_LOCATION);
+                } else {
+                    getLocation();
+                }
+            } else {
+                getLocation();
+            }
+        }
+    }
+
+    private void getLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            locationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        final String latitud = String.valueOf(location.getLatitude());
+                        final String longitud = String.valueOf(location.getLongitude());
+                        final String hora = DateFormat.getTimeInstance().format(new Date());
+
+                        enviarDatosUbicacion(latitud, longitud, hora);
+                    } else {
+                        Toast.makeText(Comprobation_Menu.this, "Ubicación no disponible", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(this, "Permiso de ubicación no concedido", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void enviarDatosUbicacion(String latitud, String longitud, String hora) {
+        String url = "http://192.168.20.28/pharmabot/ubicacion.php";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            if (jsonResponse.has("id_ubicacion")) {
+                                int idUbicacion = jsonResponse.getInt("id_ubicacion");
+                                Toast.makeText(Comprobation_Menu.this, "Datos enviados correctamente. ID: " + idUbicacion, Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(Comprobation_Menu.this, "Error al enviar datos: " + jsonResponse.getString("error"), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(Comprobation_Menu.this, "Error al procesar la respuesta: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(Comprobation_Menu.this, "Error de red: " + error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("latitud", latitud);
+                params.put("longitud", longitud);
+                params.put("hora", hora);
+                return params;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_LOCATION && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            checkPermissionsAndRequestLocation();  // Revisar de nuevo los permisos en caso que esté en Android 10+
+        } else if (requestCode == REQUEST_BACKGROUND_LOCATION && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            getLocation();
+        } else {
+            Toast.makeText(this, "Permiso de ubicación denegado", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
