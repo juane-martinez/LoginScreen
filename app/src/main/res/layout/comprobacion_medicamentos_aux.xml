@@ -32,8 +32,9 @@
         app:lottie_loop="true" />
 
     <ScrollView
-        android:layout_width="332dp"
-        android:layout_height="561dp"
+        android:id="@+id/scrollView2"
+        android:layout_width="346dp"
+        android:layout_height="448dp"
         android:layout_marginTop="2dp"
         android:contentDescription="Contenedor desplazable"
         app:layout_constraintEnd_toEndOf="parent"
@@ -90,7 +91,7 @@
         android:id="@+id/EscanearTXT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="8dp"
         android:backgroundTint="@color/buttons"
         android:drawableLeft="@drawable/baseline_document_scanner_24"
         android:text="Escanear texto"
@@ -100,6 +101,20 @@
         app:layout_constraintBottom_toTopOf="@+id/ReconocerTXT"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/comprobar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="112dp"
+        android:backgroundTint="@color/buttons"
+        android:drawableLeft="@drawable/comp"
+        android:text="Comprobar"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

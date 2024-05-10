@@ -33,7 +33,7 @@ public class Medic_Information extends AppCompatActivity {
     }
 
     private void obtenerHistoriaClinica(String idPaciente) {
-        String url = "https://pharmabot-lab4.000webhostapp.com/php/historia_clinica.php";
+        String url = "https://lab4pharmabot.000webhostapp.com/historia_clinica.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override

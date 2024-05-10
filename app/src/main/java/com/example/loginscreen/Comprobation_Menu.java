@@ -57,6 +57,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -69,6 +70,8 @@ public class Comprobation_Menu extends AppCompatActivity {
     Button scanner_btn;
     ImageView imagen;
     EditText TextoReconocidoEt;
+
+    Button comprobar_btn;
     private Uri uri= null;
     private ProgressDialog progressDialog;
     private TextRecognizer textRecognizer;
@@ -83,6 +86,7 @@ public class Comprobation_Menu extends AppCompatActivity {
         setContentView(R.layout.comprobacion_medicamentos_aux);
         capture_btn = findViewById(R.id.ReconocerTXT);
         scanner_btn = findViewById(R.id.EscanearTXT);
+        comprobar_btn=findViewById(R.id.comprobar);
         imagen = findViewById(R.id.imagen);
         TextoReconocidoEt = findViewById(R.id.TextoReconocidoEt);
         progressDialog = new ProgressDialog(Comprobation_Menu.this);
@@ -113,8 +117,16 @@ public class Comprobation_Menu extends AppCompatActivity {
                 }
             }
         });
+        comprobar_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Comprobar_Medicamento();
+            }
+        });
 
     }
+
+
 
     private void reconocerTextoDeImagen() {
         progressDialog.setMessage("Preparando  Imagen");
@@ -143,6 +155,67 @@ public class Comprobation_Menu extends AppCompatActivity {
             Toast.makeText(Comprobation_Menu.this, "Error al preparar la imagen: "+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void Comprobar_Medicamento() {
+        // Obtener el texto del medicamento y la dosis ingresado por el usuario
+        String medicamentoDosis = TextoReconocidoEt.getText().toString().trim();
+
+        // Verificar si el texto ingresado por el usuario no es nulo
+        if (medicamentoDosis != null && !medicamentoDosis.isEmpty()) {
+            // Realizar la solicitud HTTP para comprobar el medicamento y la dosis
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url = "https://lab4pharmabot.000webhostapp.com/comprobar_medicamento.php"; // URL de tu archivo PHP en el servidor
+
+            // Realizar una solicitud GET al servidor
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // Verificar si la respuesta no es nula y no está vacía
+                            if (response != null && !response.isEmpty()) {
+                                // Procesar la respuesta del servidor
+                                try {
+                                    // Convertir la respuesta JSON a un objeto JSONObject
+                                    JSONObject jsonObject = new JSONObject(response);
+
+                                    // Obtener el medicamento y la dosis de la respuesta JSON
+                                    String medicamento = jsonObject.getString("medicamento");
+                                    String dosis = jsonObject.getString("dosis");
+
+                                    // Comparar el medicamento y la dosis obtenidos con el medicamento y la dosis ingresados por el usuario
+                                    if (medicamento.equalsIgnoreCase(medicamentoDosis) || dosis.equalsIgnoreCase(medicamentoDosis)) {
+                                        // Si coincide, mostrar un mensaje de éxito
+                                        Toast.makeText(Comprobation_Menu.this, "El medicamento y la dosis coinciden", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        // Si no coincide, mostrar un mensaje de error
+                                        Toast.makeText(Comprobation_Menu.this, "El medicamento y la dosis no coinciden", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    // Si hay un error al procesar la respuesta JSON, mostrar un mensaje de error
+                                    e.printStackTrace();
+                                    Toast.makeText(Comprobation_Menu.this, "Error al procesar la respuesta del servidor", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                // Si la respuesta es nula o vacía, mostrar un mensaje de error
+                                Toast.makeText(Comprobation_Menu.this, "Respuesta vacía o nula del servidor", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // Si hay un error al realizar la solicitud HTTP, mostrar un mensaje de error
+                    Toast.makeText(Comprobation_Menu.this, "Error al realizar la solicitud al servidor", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            // Agregar la solicitud a la cola de solicitudes
+            queue.add(stringRequest);
+        } else {
+            // Si el texto ingresado por el usuario es nulo o vacío, mostrar un mensaje de error
+            Toast.makeText(Comprobation_Menu.this, "Texto ingresado por el usuario inválido", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     private void AbrirCamara(){
         ContentValues values = new ContentValues();
@@ -209,7 +282,7 @@ public class Comprobation_Menu extends AppCompatActivity {
     }
 
     private void enviarDatosUbicacion(String latitud, String longitud, String hora) {
-        String url = "https://pharmabot-lab4.000webhostapp.com/php/ubicacion.php";
+        String url = "https://lab4pharmabot.000webhostapp.com/ubicacion.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override

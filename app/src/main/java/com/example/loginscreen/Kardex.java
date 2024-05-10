@@ -41,7 +41,7 @@ public class Kardex extends AppCompatActivity{
     }
 
     private void obtenerDatosKardex(String idPaciente) {
-        String url = "https://pharmabot-lab4.000webhostapp.com/php/kardex.php";
+        String url = "https://lab4pharmabot.000webhostapp.com/kardex.php";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
