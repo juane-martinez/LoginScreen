@@ -53,7 +53,7 @@ public class Patient_Informationcp extends AppCompatActivity {
             }
         });
 
-        ImageButton btnKardex = findViewById(R.id.imageButtonKardex);
+        btnKardex = findViewById(R.id.imageButtonKardex);
         btnKardex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

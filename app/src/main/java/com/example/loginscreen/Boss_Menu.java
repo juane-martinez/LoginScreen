@@ -20,6 +20,8 @@ public class Boss_Menu extends AppCompatActivity{
 
     ImageButton infop_btn;
     ImageButton verificarp_btn;
+    String idPaciente;
+    String datosPaciente;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +29,8 @@ public class Boss_Menu extends AppCompatActivity{
 
         infop_btn=findViewById(R.id.imageButton2);
         verificarp_btn=findViewById(R.id.imageButton);
+        idPaciente = getIntent().getStringExtra("id_paciente");
+        datosPaciente = getIntent().getStringExtra("datosPaciente");
 
         infop_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,15 +42,14 @@ public class Boss_Menu extends AppCompatActivity{
         verificarp_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                IntentIntegrator intentIntegrator = new IntentIntegrator(Boss_Menu.this);
-                intentIntegrator.setOrientationLocked(true);
-                intentIntegrator.setPrompt("Escanea el Código");
-                intentIntegrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-                intentIntegrator.initiateScan();
+                Intent intent = new Intent(Boss_Menu.this, Patient_Information.class);
+                //intent.putExtra("id_paciente", idPaciente);
+                intent.putExtra("id_paciente", idPaciente); // Pasar el ID del paciente
+                intent.putExtra("datosPaciente", datosPaciente); // Pasar los datos del paciente como JSON String
+                startActivity(intent);
             }
         });
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
