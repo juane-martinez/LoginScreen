@@ -43,4 +43,7 @@ dependencies {
     implementation ("com.airbnb.android:lottie:4.2.1")
     implementation("com.android.volley:volley:1.2.1")
     implementation ("com.google.android.gms:play-services-location:17.0.0")
+
+
+
 }

@@ -14,23 +14,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.util.Log;
 
-import androidx.activity.EdgeToEdge;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import android.widget.ImageButton;
+
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -48,21 +44,19 @@ import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
-import com.google.mlkit.vision.text.TextRecognizerOptionsInterface;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class Comprobation_Menu extends AppCompatActivity {
 
@@ -157,64 +151,67 @@ public class Comprobation_Menu extends AppCompatActivity {
     }
 
     private void Comprobar_Medicamento() {
-        // Obtener el texto del medicamento y la dosis ingresado por el usuario
-        String medicamentoDosis = TextoReconocidoEt.getText().toString().trim();
+        String medicamento_escaneado = TextoReconocidoEt.getText().toString().trim();
+        Log.d("DEBUG", "Texto ingresado por el usuario: " + medicamento_escaneado);
 
-        // Verificar si el texto ingresado por el usuario no es nulo
-        if (medicamentoDosis != null && !medicamentoDosis.isEmpty()) {
-            // Realizar la solicitud HTTP para comprobar el medicamento y la dosis
+        if (medicamento_escaneado != null && !medicamento_escaneado.isEmpty()) {
             RequestQueue queue = Volley.newRequestQueue(this);
-            String url = "https://lab4pharmabot.000webhostapp.com/comprobar_medicamento.php"; // URL de tu archivo PHP en el servidor
+            String url = "https://lab4pharmabot.000webhostapp.com/comprobar_medicamento.php";
 
-            // Realizar una solicitud GET al servidor
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            // Verificar si la respuesta no es nula y no está vacía
                             if (response != null && !response.isEmpty()) {
-                                // Procesar la respuesta del servidor
                                 try {
-                                    // Convertir la respuesta JSON a un objeto JSONObject
-                                    JSONObject jsonObject = new JSONObject(response);
+                                    JSONArray jsonArray = new JSONArray(response);
+                                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                                    String medicamento_servidor = jsonObject.getString("medicamento");
+                                    String dosis_servidor = jsonObject.getString("dosis");
 
-                                    // Obtener el medicamento y la dosis de la respuesta JSON
-                                    String medicamento = jsonObject.getString("medicamento");
-                                    String dosis = jsonObject.getString("dosis");
+                                    // Actualizar llamada a buscarPalabras para pasar medicamento y dosis
+                                    boolean encontrado = buscarPalabras(medicamento_escaneado, medicamento_servidor, dosis_servidor);
 
-                                    // Comparar el medicamento y la dosis obtenidos con el medicamento y la dosis ingresados por el usuario
-                                    if (medicamento.equalsIgnoreCase(medicamentoDosis) || dosis.equalsIgnoreCase(medicamentoDosis)) {
-                                        // Si coincide, mostrar un mensaje de éxito
+                                    Log.d("DEBUG", "Medicamento del servidor: " + medicamento_servidor + ", Dosis: " + dosis_servidor);
+
+                                    if (encontrado) {
                                         Toast.makeText(Comprobation_Menu.this, "El medicamento y la dosis coinciden", Toast.LENGTH_SHORT).show();
                                     } else {
-                                        // Si no coincide, mostrar un mensaje de error
                                         Toast.makeText(Comprobation_Menu.this, "El medicamento y la dosis no coinciden", Toast.LENGTH_SHORT).show();
                                     }
                                 } catch (JSONException e) {
-                                    // Si hay un error al procesar la respuesta JSON, mostrar un mensaje de error
                                     e.printStackTrace();
                                     Toast.makeText(Comprobation_Menu.this, "Error al procesar la respuesta del servidor", Toast.LENGTH_SHORT).show();
                                 }
                             } else {
-                                // Si la respuesta es nula o vacía, mostrar un mensaje de error
                                 Toast.makeText(Comprobation_Menu.this, "Respuesta vacía o nula del servidor", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    // Si hay un error al realizar la solicitud HTTP, mostrar un mensaje de error
-                    Toast.makeText(Comprobation_Menu.this, "Error al realizar la solicitud al servidor", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Comprobation_Menu.this, "Error de solicitud al servidor", Toast.LENGTH_SHORT).show();
                 }
             });
 
-            // Agregar la solicitud a la cola de solicitudes
             queue.add(stringRequest);
         } else {
-            // Si el texto ingresado por el usuario es nulo o vacío, mostrar un mensaje de error
             Toast.makeText(Comprobation_Menu.this, "Texto ingresado por el usuario inválido", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public static boolean buscarPalabras(String texto, String medicamento, String dosis) {
+        Pattern patternMedicamento = Pattern.compile("\\b" + medicamento + "\\b", Pattern.CASE_INSENSITIVE);
+        Matcher matcherMedicamento = patternMedicamento.matcher(texto);
+        boolean encontradoMedicamento = matcherMedicamento.find();
+
+        Pattern patternDosis = Pattern.compile("\\b" + dosis + "\\b", Pattern.CASE_INSENSITIVE);
+        Matcher matcherDosis = patternDosis.matcher(texto);
+        boolean encontradoDosis = matcherDosis.find();
+
+        return encontradoMedicamento && encontradoDosis;
+    }
+
 
 
     private void AbrirCamara(){
