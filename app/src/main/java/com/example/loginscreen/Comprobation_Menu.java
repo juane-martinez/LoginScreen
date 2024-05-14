@@ -65,6 +65,7 @@ public class Comprobation_Menu extends AppCompatActivity {
     ImageView imagen;
     EditText TextoReconocidoEt;
 
+    String idPaciente;
     Button comprobar_btn;
     private Uri uri= null;
     private ProgressDialog progressDialog;
@@ -88,6 +89,9 @@ public class Comprobation_Menu extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
         textRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
         locationClient = LocationServices.getFusedLocationProviderClient(this);
+        idPaciente = getIntent().getStringExtra("id_paciente");
+        Log.d("DEBUG", "ID del paciente recibida: " + idPaciente);
+
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
@@ -153,46 +157,51 @@ public class Comprobation_Menu extends AppCompatActivity {
     private void Comprobar_Medicamento() {
         String medicamento_escaneado = TextoReconocidoEt.getText().toString().trim();
         Log.d("DEBUG", "Texto ingresado por el usuario: " + medicamento_escaneado);
-
+        Log.d("DEBUG", "id del paciente :v " + idPaciente);
         if (medicamento_escaneado != null && !medicamento_escaneado.isEmpty()) {
             RequestQueue queue = Volley.newRequestQueue(this);
-            String url = "https://lab4pharmabot.000webhostapp.com/comprobar_medicamento.php";
+            String url = "https://lab4pharmabot.000webhostapp.com/comprobar_medicamento.php?id_paciente=" + idPaciente;
 
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            if (response != null && !response.isEmpty()) {
-                                try {
-                                    JSONArray jsonArray = new JSONArray(response);
-                                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            Log.d("DEBUG", "Respuesta del servidor: " + response);
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                boolean encontrado = false;
+
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
                                     String medicamento_servidor = jsonObject.getString("medicamento");
                                     String dosis_servidor = jsonObject.getString("dosis");
 
-                                    // Actualizar llamada a buscarPalabras para pasar medicamento y dosis
-                                    boolean encontrado = buscarPalabras(medicamento_escaneado, medicamento_servidor, dosis_servidor);
+                                    boolean coincidencia = buscarPalabras(medicamento_escaneado, medicamento_servidor, dosis_servidor);
 
-                                    Log.d("DEBUG", "Medicamento del servidor: " + medicamento_servidor + ", Dosis: " + dosis_servidor);
-
-                                    if (encontrado) {
-                                        Toast.makeText(Comprobation_Menu.this, "El medicamento y la dosis coinciden", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(Comprobation_Menu.this, "El medicamento y la dosis no coinciden", Toast.LENGTH_SHORT).show();
+                                    if (coincidencia) {
+                                        encontrado = true;
+                                        break;
                                     }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    Toast.makeText(Comprobation_Menu.this, "Error al procesar la respuesta del servidor", Toast.LENGTH_SHORT).show();
                                 }
-                            } else {
-                                Toast.makeText(Comprobation_Menu.this, "Respuesta vacía o nula del servidor", Toast.LENGTH_SHORT).show();
+
+                                if (encontrado) {
+                                    Toast.makeText(Comprobation_Menu.this, "El medicamento y la dosis coinciden", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(Comprobation_Menu.this, "No se encontró coincidencia para el medicamento y dosis", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(Comprobation_Menu.this, "Error al procesar la respuesta del servidor", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(Comprobation_Menu.this, "Error de solicitud al servidor", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Comprobation_Menu.this, "Error al realizar la solicitud al servidor", Toast.LENGTH_SHORT).show();
                 }
-            });
+            }
+            );
+
 
             queue.add(stringRequest);
         } else {
@@ -201,6 +210,12 @@ public class Comprobation_Menu extends AppCompatActivity {
     }
 
     public static boolean buscarPalabras(String texto, String medicamento, String dosis) {
+
+        Log.d("DEBUG", "Texto recibido para búsqueda: " + texto);
+        Log.d("DEBUG", "Medicamento a buscar: " + medicamento);
+        Log.d("DEBUG", "Dosis a buscar: " + dosis);
+
+
         Pattern patternMedicamento = Pattern.compile("\\b" + medicamento + "\\b", Pattern.CASE_INSENSITIVE);
         Matcher matcherMedicamento = patternMedicamento.matcher(texto);
         boolean encontradoMedicamento = matcherMedicamento.find();
@@ -208,6 +223,18 @@ public class Comprobation_Menu extends AppCompatActivity {
         Pattern patternDosis = Pattern.compile("\\b" + dosis + "\\b", Pattern.CASE_INSENSITIVE);
         Matcher matcherDosis = patternDosis.matcher(texto);
         boolean encontradoDosis = matcherDosis.find();
+
+        if (encontradoMedicamento) {
+            Log.d("DEBUG", "Medicamento encontrado en el texto.");
+        } else {
+            Log.d("DEBUG", "Medicamento no encontrado en el texto.");
+        }
+
+        if (encontradoDosis) {
+            Log.d("DEBUG", "Dosis encontrada en el texto.");
+        } else {
+            Log.d("DEBUG", "Dosis no encontrada en el texto.");
+        }
 
         return encontradoMedicamento && encontradoDosis;
     }

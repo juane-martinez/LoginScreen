@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Patient_Information extends AppCompatActivity {
+public class Patient_Informationcp extends AppCompatActivity {
     EditText nombre, apellido, fechaN, sexo, direccion, telefono;
     ImageButton historiac;
     ImageButton btnKardex;
@@ -24,53 +23,41 @@ public class Patient_Information extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.patient_information);
 
-        // Inicializar vistas
         nombre = findViewById(R.id.editTextFechaI);
         apellido = findViewById(R.id.editTextCama);
         fechaN = findViewById(R.id.editTextMedicamentos);
         sexo = findViewById(R.id.editTextDosis);
-        direccion = findViewById(R.id.editTextDireccion);
+        direccion= findViewById(R.id.editTextDireccion);
         telefono = findViewById(R.id.editTextTelefono);
         historiac = findViewById(R.id.imageButtonHistoriaC);
-        btnKardex = findViewById(R.id.imageButtonKardex);
-
-        // Obtener ID del paciente
         idPaciente = getIntent().getStringExtra("id_paciente");
-
-        // Obtener datos del paciente y mostrarlos en las vistas
         String datosPaciente = getIntent().getStringExtra("datosPaciente");
-        if (datosPaciente != null) {
-            try {
-                JSONObject obj = new JSONObject(datosPaciente);
-                nombre.setText(obj.getString("nombre"));
-                apellido.setText(obj.getString("apellido"));
-                fechaN.setText(obj.getString("fecha_nacimiento"));
-                sexo.setText(obj.getString("sexo"));
-                direccion.setText(obj.getString("direccion"));
-                telefono.setText(obj.getString("telefono"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Error al obtener datos del paciente", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(this, "No se recibieron datos del paciente", Toast.LENGTH_SHORT).show();
+        try {
+            JSONObject obj = new JSONObject(datosPaciente);
+            nombre.setText(obj.getString("nombre"));
+            apellido.setText(obj.getString("apellido"));
+            fechaN.setText(obj.getString("fecha_nacimiento"));
+            sexo.setText(obj.getString("sexo"));
+            direccion.setText(obj.getString("direccion"));
+            telefono.setText(obj.getString("telefono"));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-        // Configurar el botón para ir a la actividad Medic_Information
         historiac.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Patient_Information.this, Medic_Information.class);
+                Intent intent = new Intent(Patient_Informationcp.this, Medic_Information.class);
                 intent.putExtra("id_paciente", idPaciente);
                 startActivity(intent);
             }
         });
 
-        // Configurar el botón para ir a la actividad Kardex
+        ImageButton btnKardex = findViewById(R.id.imageButtonKardex);
         btnKardex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Patient_Information.this, Kardex.class);
+                Intent intent = new Intent(Patient_Informationcp.this, Kardex.class);
                 intent.putExtra("id_paciente", idPaciente);
                 startActivity(intent);
             }

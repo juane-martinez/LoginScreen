@@ -44,6 +44,7 @@ import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,5 +77,55 @@ public class escanear_qr_auxiliar extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (intentResult != null && intentResult.getContents() != null) {
+            String idPaciente = intentResult.getContents();
+            obtenerInformacionPaciente(idPaciente);
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void obtenerInformacionPaciente(String idPaciente) {
+        String url = "https://lab4pharmabot.000webhostapp.com/consultaQR.php";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.has("error")) {
+                                Intent intent = new Intent(escanear_qr_auxiliar.this, Assistant_Menu.class);
+                                Log.d("DEBUG", "ID del paciente: " + idPaciente);
+                                intent.putExtra("id_paciente", idPaciente); // Pasar el ID del paciente
+                                intent.putExtra("datosPaciente", response);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(escanear_qr_auxiliar.this, obj.getString("error"), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(escanear_qr_auxiliar.this, "Error de parsing: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(escanear_qr_auxiliar.this, "Error de red: " + error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("id_paciente", idPaciente);
+                return params;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 }

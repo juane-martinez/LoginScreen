@@ -5,6 +5,15 @@
       <entry key="Assistant_Menu">
         <State />
       </entry>
+      <entry key="Comprobation_Menu">
+        <State />
+      </entry>
+      <entry key="MainActivity">
+        <State />
+      </entry>
+      <entry key="Medication_Record_Aux">
+        <State />
+      </entry>
       <entry key="app">
         <State>
           <targetSelectedWithDropDown>

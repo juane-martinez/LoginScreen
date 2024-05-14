@@ -91,9 +91,9 @@ public class MainActivity extends AppCompatActivity {
                                 int tipoUsuario = obj.getInt("tipo_usuario");
                                 Intent intent;
                                 if (tipoUsuario == 0) {
-                                    intent = new Intent(getApplicationContext(), Assistant_Menu.class);
+                                    intent = new Intent(getApplicationContext(), escanear_qr_auxiliar.class);
                                 } else if (tipoUsuario == 1) {
-                                    intent = new Intent(getApplicationContext(), Boss_Menu.class);
+                                    intent = new Intent(getApplicationContext(), escanear_qr_jefe.class);
                                 } else {
                                     throw new IllegalArgumentException("Tipo de usuario no soportado");
                                 }
