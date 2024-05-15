@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (tipoUsuario == 0) {
                                     intent = new Intent(getApplicationContext(), escanear_qr_auxiliar.class);
                                 } else if (tipoUsuario == 1) {
-                                    intent = new Intent(getApplicationContext(), escanear_qr_jefe.class);
+                                    intent = new Intent(getApplicationContext(), Boss_Menu.class);
                                 } else {
                                     throw new IllegalArgumentException("Tipo de usuario no soportado");
                                 }
@@ -184,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
                 return params;
             }
         };
-
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }

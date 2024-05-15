@@ -64,7 +64,7 @@ public class escanear_qr_jefe extends AppCompatActivity {
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.has("error")) {
-                                Intent intent = new Intent(escanear_qr_jefe.this, Boss_Menu.class);
+                                Intent intent = new Intent(escanear_qr_jefe.this, Patient_Information.class);
                                 Log.d("DEBUG", "ID del paciente: " + idPaciente);
                                 intent.putExtra("id_paciente", idPaciente); // Pasar el ID del paciente
                                 intent.putExtra("datosPaciente", response);
