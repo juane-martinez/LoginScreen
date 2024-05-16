@@ -35,6 +35,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.volley)
+    implementation(libs.games.activity)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -43,7 +44,10 @@ dependencies {
     implementation ("com.airbnb.android:lottie:4.2.1")
     implementation("com.android.volley:volley:1.2.1")
     implementation ("com.google.android.gms:play-services-location:17.0.0")
-
+    // OkHttp
+    implementation ("com.squareup.okhttp3:okhttp:4.10.0")
+    // Para utilizar 'RequestBody.create(...)'
+    implementation ("com.squareup.okhttp3:okhttp:4.10.0")
 
 
 }

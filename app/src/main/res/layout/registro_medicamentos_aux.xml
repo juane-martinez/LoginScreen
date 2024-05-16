@@ -54,19 +54,6 @@
                 android:contentDescription="Imagen representativa"
                 android:src="@drawable/fotoimagen" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Texto reconocido:"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/TextoReconocidoEt"
-                android:layout_width="332dp"
-                android:layout_height="150dp"
-                android:layout_marginTop="10dp"
-                android:hint=":)" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
     </ScrollView>
@@ -75,7 +62,7 @@
         android:id="@+id/ReconocerTXT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="28dp"
         android:backgroundTint="@color/buttons"
         android:drawableLeft="@drawable/baseline_photo_camera_24"
         android:text="Tomar Foto"
@@ -87,13 +74,13 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/EscanearTXT"
+        android:id="@+id/subir_foto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/buttons"
         android:drawableLeft="@drawable/baseline_document_scanner_24"
-        android:text="Escanear texto"
+        android:text="Subir Foto"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"

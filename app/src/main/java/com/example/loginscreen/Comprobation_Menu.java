@@ -1,4 +1,5 @@
 package com.example.loginscreen;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -10,12 +11,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.util.Log;
-
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -26,8 +27,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -55,8 +54,8 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Comprobation_Menu extends AppCompatActivity {
 
@@ -80,7 +79,7 @@ public class Comprobation_Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comprobacion_medicamentos_aux);
         capture_btn = findViewById(R.id.ReconocerTXT);
-        scanner_btn = findViewById(R.id.EscanearTXT);
+        scanner_btn = findViewById(R.id.subir_foto);
         comprobar_btn=findViewById(R.id.comprobar);
         imagen = findViewById(R.id.imagen);
         TextoReconocidoEt = findViewById(R.id.TextoReconocidoEt);
@@ -89,6 +88,7 @@ public class Comprobation_Menu extends AppCompatActivity {
         progressDialog.setCanceledOnTouchOutside(false);
         textRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
         locationClient = LocationServices.getFusedLocationProviderClient(this);
+
         idPaciente = getIntent().getStringExtra("id_paciente");
         Log.d("DEBUG", "ID del paciente recibida: " + idPaciente);
 
