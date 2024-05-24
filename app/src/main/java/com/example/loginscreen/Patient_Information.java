@@ -17,6 +17,7 @@ public class Patient_Information extends AppCompatActivity {
     EditText nombre, apellido, fechaN, sexo, direccion, telefono;
     ImageButton historiac;
     ImageButton btnKardex;
+    ImageButton btnHistorialProcedimientos;
     String idPaciente;
 
     @Override
@@ -33,6 +34,7 @@ public class Patient_Information extends AppCompatActivity {
         telefono = findViewById(R.id.editTextTelefono);
         historiac = findViewById(R.id.imageButtonHistoriaC);
         btnKardex = findViewById(R.id.imageButtonKardex);
+        btnHistorialProcedimientos= findViewById(R.id.imageButtonHistorialP);
 
         // Obtener ID del paciente
         idPaciente = getIntent().getStringExtra("id_paciente");
@@ -75,5 +77,15 @@ public class Patient_Information extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        btnHistorialProcedimientos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Patient_Information.this, Historial_Procedimientos.class);
+                intent.putExtra("id_paciente", idPaciente);
+                startActivity(intent);
+            }
+        });
+
     }
 }
