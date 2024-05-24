@@ -1,11 +1,13 @@
 package com.example.loginscreen;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -53,5 +55,22 @@ public class Boss_Menu extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
-
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setMessage("¿Deseas cerrar sesión?")
+                .setCancelable(false)
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Boss_Menu.this.finish();
+                        startActivity(new Intent(Boss_Menu.this, MainActivity.class)); // Regresa a MainActivity opcionalmente
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss(); // Cierra solo el diálogo si el usuario selecciona "No"
+                    }
+                })
+                .show();
+    }
 }

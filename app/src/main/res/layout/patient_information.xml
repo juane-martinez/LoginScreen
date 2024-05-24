@@ -227,18 +227,32 @@
         app:srcCompat="@drawable/medic_information" />
 
     <ImageButton
+        android:id="@+id/imageButtonHistorialP"
+        android:layout_width="298dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#00FFFFFF"
+        android:contentDescription="Botón para historia PROCEDIMIENTOS"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButtonKardex"
+        app:srcCompat="@drawable/history" />
+
+    <ImageButton
         android:id="@+id/imageButtonKardex"
         android:layout_width="298dp"
         android:layout_height="100dp"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
         android:backgroundTint="#00FFFFFF"
         android:contentDescription="Botón para historia clinica"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButtonHistoriaC"
-        app:srcCompat="@drawable/history" />
+        app:srcCompat="@drawable/kardex" />
 
     <TextView
         android:id="@+id/fecha_nacimiento"

@@ -25,46 +25,68 @@ import com.android.volley.toolbox.Volley;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Kardex extends AppCompatActivity{
+
+public class Kardex extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.kardex);
+
+        // Obtener el ID del paciente pasado por el Intent que inició esta actividad
         String idPaciente = getIntent().getStringExtra("id_paciente");
+
+        // Llamar al método que inicia la petición de datos del kardex
         obtenerDatosKardex(idPaciente);
     }
 
     private void obtenerDatosKardex(String idPaciente) {
         String url = "https://lab4pharmabot.000webhostapp.com/kardex.php";
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject obj = new JSONObject(response);
-                            if (!obj.has("error")) {
-                                EditText txtFechaIngreso = findViewById(R.id.editTextFechaI);
-                                EditText txtCama = findViewById(R.id.editTextCama);
-                                EditText txtMedicamento = findViewById(R.id.editTextMedicamentos);
-                                EditText txtDosis = findViewById(R.id.editTextDosis);
-                                EditText txtVia = findViewById(R.id.editTextVia);
-                                EditText txtHorario = findViewById(R.id.editTextHorario);
+                            JSONArray jsonArray = new JSONArray(response);
+                            StringBuilder medicamentos = new StringBuilder();
+                            StringBuilder dosis = new StringBuilder();
 
-                                txtFechaIngreso.setText(obj.getString("fecha_ingreso"));
-                                txtCama.setText(obj.getString("cama"));
-                                txtMedicamento.setText(obj.getString("medicamento"));
-                                txtDosis.setText(obj.getString("dosis"));
-                                txtVia.setText(obj.getString("via"));
-                                txtHorario.setText(obj.getString("horario"));
-                            } else {
-                                Toast.makeText(Kardex.this, obj.getString("error"), Toast.LENGTH_SHORT).show();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject obj = jsonArray.getJSONObject(i);
+                                if (i > 0) {
+                                    medicamentos.append(", ");
+                                    dosis.append(", ");
+                                }
+                                medicamentos.append(obj.getString("medicamento"));
+                                dosis.append(obj.getString("dosis"));
                             }
+
+                            // Asignar los valores a los EditTexts de la interfaz
+                            EditText txtFechaIngreso = findViewById(R.id.editTextFechaI);
+                            EditText txtCama = findViewById(R.id.editTextCama);
+                            EditText txtMedicamento = findViewById(R.id.editTextMedicamentos);
+                            EditText txtDosis = findViewById(R.id.editTextDosis);
+                            EditText txtVia = findViewById(R.id.editTextVia);
+                            EditText txtHorario = findViewById(R.id.editTextHorario);
+
+                            // Si hay datos, usar el primer objeto JSON para llenar los campos que no cambian
+                            if (jsonArray.length() > 0) {
+                                JSONObject firstEntry = jsonArray.getJSONObject(0);
+                                txtFechaIngreso.setText(firstEntry.getString("fecha_ingreso"));
+                                txtCama.setText(firstEntry.getString("cama"));
+                                txtVia.setText(firstEntry.getString("via"));
+                                txtHorario.setText(firstEntry.getString("horario"));
+                            }
+
+                            txtMedicamento.setText(medicamentos.toString());
+                            txtDosis.setText(dosis.toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Toast.makeText(Kardex.this, "Error de parsing: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -88,3 +110,4 @@ public class Kardex extends AppCompatActivity{
         queue.add(stringRequest);
     }
 }
+
