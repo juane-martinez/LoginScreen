@@ -47,6 +47,9 @@ public class registrar_medicamento extends AppCompatActivity {
     private ImageView imageView;
     private Uri imageUri; // Uri de la imagen capturada
 
+
+
+
     String idPaciente;
 
     @Override
@@ -67,6 +70,7 @@ public class registrar_medicamento extends AppCompatActivity {
         btnSubirFoto.setOnClickListener(view -> {
             if (imageUri != null) {
                 uploadImage(imageUri);
+                //subirInformacionAplicacion(medicamento, dosis, "Sin observaciones");
             } else {
                 Toast.makeText(this, "Primero toma una foto", Toast.LENGTH_SHORT).show();
             }
@@ -160,6 +164,51 @@ public class registrar_medicamento extends AppCompatActivity {
                     public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                         if (response.isSuccessful()) {
                             final String responseBody = response.body().string();
+                            // Verificar si el Intent tiene el extra "medicamento"
+                            if (getIntent().hasExtra("medicamento")) {
+                                // Obtener el valor del extra "medicamento"
+                                String medicamento = getIntent().getStringExtra("medicamento");
+                                if (medicamento != null) {
+                                    // El extra "medicamento" no es null, puedes usarlo
+
+                                    // Verificar si el Intent tiene el extra "dosis"
+                                    if (getIntent().hasExtra("dosis")) {
+                                        // Obtener el valor del extra "dosis"
+                                        String dosis = getIntent().getStringExtra("dosis");
+                                        if (dosis != null) {
+                                            subirInformacionAplicacion(medicamento, dosis);
+
+                                        } else {
+                                            // El extra "dosis" es null
+                                            // Mostrar un mensaje de error
+                                            Toast.makeText(registrar_medicamento.this, "No se pudo obtener la dosis", Toast.LENGTH_SHORT).show();
+                                            // Registrar el tipo de error en Logcat
+                                            Log.e("ERROR", "No se pudo obtener la dosis. El valor del extra 'dosis' es null.");
+                                        }
+                                    } else {
+                                        // El Intent no tiene el extra "dosis"
+                                        // Mostrar un mensaje de error
+                                        Toast.makeText(registrar_medicamento.this, "No se pudo obtener la dosis", Toast.LENGTH_SHORT).show();
+                                        // Registrar el tipo de error en Logcat
+                                        Log.e("ERROR", "No se pudo obtener la dosis. El Intent no tiene el extra 'dosis'.");
+                                    }
+                                } else {
+                                    // El extra "medicamento" es null
+                                    // Mostrar un mensaje de error
+                                    Toast.makeText(registrar_medicamento.this, "No se pudo obtener el medicamento", Toast.LENGTH_SHORT).show();
+                                    // Registrar el tipo de error en Logcat
+                                    Log.e("ERROR", "No se pudo obtener el medicamento. El valor del extra 'medicamento' es null.");
+                                }
+                            } else {
+                                // El Intent no tiene el extra "medicamento"
+                                // Mostrar un mensaje de error
+                                Toast.makeText(registrar_medicamento.this, "No se pudo obtener el medicamento", Toast.LENGTH_SHORT).show();
+                                // Registrar el tipo de error en Logcat
+                                Log.e("ERROR", "No se pudo obtener el medicamento. El Intent no tiene el extra 'medicamento'.");
+                            }
+
+                            //String dosis = getIntent().getStringExtra("dosis");
+
                             registrar_medicamento.this.runOnUiThread(() -> Toast.makeText(registrar_medicamento.this, "Carga exitosa: " + responseBody, Toast.LENGTH_SHORT).show());
                         }
                     }
@@ -186,6 +235,60 @@ public class registrar_medicamento extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         return dateFormat.format(calendar.getTime());
     }
+
+    private void subirInformacionAplicacion(String medicamento, String dosis) {
+        // Obtener fecha y hora actual
+        String fechaHora = obtenerFechaHora();
+
+        // Obtener ubicación actual
+        Location location = obtenerUbicacion();
+        if (location != null) {
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+
+            // Realizar la llamada a la API para subir la información
+            try {
+                // Crear el cuerpo de la solicitud HTTP sin las observaciones
+                RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                        .addFormDataPart("fechaHora", fechaHora)
+                        .addFormDataPart("latitude", String.valueOf(latitude))
+                        .addFormDataPart("longitude", String.valueOf(longitude))
+                        .addFormDataPart("pacienteId", idPaciente)
+                        .addFormDataPart("medicamento", medicamento)
+                        .addFormDataPart("dosis", dosis)
+                        .build();
+
+                // Construir la solicitud HTTP
+                Request request = new Request.Builder()
+                        .url("https://lab4pharmabot.000webhostapp.com/subir_aplicacion.php")
+                        .post(requestBody)
+                        .build();
+
+                // Crear el cliente HTTP y realizar la llamada
+                OkHttpClient client = new OkHttpClient();
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        if (response.isSuccessful()) {
+                            final String responseBody = response.body().string();
+                            registrar_medicamento.this.runOnUiThread(() -> Toast.makeText(registrar_medicamento.this, "Información de aplicación subida exitosamente: " + responseBody, Toast.LENGTH_SHORT).show());
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Toast.makeText(this, "No se pudo obtener la ubicación. Asegúrate de que los permisos de ubicación estén concedidos y de que el GPS esté activado.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 
 
 }

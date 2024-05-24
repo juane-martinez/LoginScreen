@@ -31,7 +31,7 @@ public class Assistant_Menu extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     //startActivity(new Intent(Assistant_Menu.this,Comprobation_Menu.class ));
-                    Intent intent = new Intent(Assistant_Menu.this, Comprobation_Menu.class);
+                    Intent intent = new Intent(Assistant_Menu.this, comprobacion_medicamentos.class);
                     intent.putExtra("id_paciente", idPaciente);
                     startActivity(intent);
                 }
