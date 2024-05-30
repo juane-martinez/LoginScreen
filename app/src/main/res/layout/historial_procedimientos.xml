@@ -72,27 +72,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextApellido" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextFechaAplicacion" />
 
     <EditText
-        android:id="@+id/editTextApellido"
+        android:id="@+id/editTextFechaAplicacion"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="180dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="10dp"
         android:drawablePadding="16dp"
         android:ems="10"
-        android:hint="Apellido"
-        android:textStyle="bold"
-        android:textColorHint="#3B608c"
-        android:textColor="#000000"
+        android:hint="Fecha aplicación"
         android:inputType="text"
+        android:textColor="#000000"
+        android:textColorHint="#3B608c"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNombre" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -106,47 +106,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/history" />
 
-    <EditText
-        android:id="@+id/editTextNombre"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="180dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="10dp"
-        android:drawablePadding="16dp"
-        android:ems="10"
-        android:hint="Nombre"
-        android:textColorHint="#3B608c"
-        android:textColor="#000000"
-        android:textStyle="bold"
-        android:inputType="text"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="25dp"
-        android:text="Nombre:"
-        app:layout_constraintEnd_toStartOf="@+id/editTextIdentificacion"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
-
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="30dp"
-        android:text="Apellido:"
+        android:layout_width="111dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="65dp"
+        android:layout_marginTop="44dp"
+        android:text="Fecha aplicación:"
         app:layout_constraintEnd_toStartOf="@+id/editTextIdentificacion"
+        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <TextView
         android:id="@+id/textView5"
