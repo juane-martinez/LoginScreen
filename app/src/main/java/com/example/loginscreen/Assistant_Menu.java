@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class Assistant_Menu extends AppCompatActivity {
     ImageButton comprobar_btn;
     ImageButton verificar_btn;
-    ImageButton registrar_btn;
+    //ImageButton registrar_btn;
 
     String idPaciente;
     String datosPaciente;
@@ -23,7 +23,7 @@ public class Assistant_Menu extends AppCompatActivity {
 
             comprobar_btn=findViewById(R.id.imageButton2);
             verificar_btn=findViewById(R.id.imageButton);
-            registrar_btn=findViewById(R.id.imageButton3);
+            //registrar_btn=findViewById(R.id.imageButton3);
 
             idPaciente = getIntent().getStringExtra("id_paciente");
             datosPaciente = getIntent().getStringExtra("datosPaciente");
@@ -47,7 +47,7 @@ public class Assistant_Menu extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-
+            /*
             registrar_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -56,7 +56,7 @@ public class Assistant_Menu extends AppCompatActivity {
                     intent.putExtra("id_paciente", idPaciente);
                     startActivity(intent);
                 }
-            });
+            });*/
         }
 
 }
