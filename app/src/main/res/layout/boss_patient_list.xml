@@ -9,8 +9,8 @@
     <!-- ImageView para algún fondo o decoración, si es necesario -->
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="400dp"
-        android:layout_height="816dp"
+        android:layout_width="458dp"
+        android:layout_height="866dp"
         android:scaleType="fitXY"
         android:src="@drawable/information_background"
         app:layout_constraintEnd_toEndOf="parent"

@@ -7,9 +7,9 @@
 
     <ImageView
         android:id="@+id/imageView10"
-        android:layout_width="393dp"
-        android:layout_height="70dp"
-        android:scaleType="fitStart"
+        android:layout_width="399dp"
+        android:layout_height="71dp"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
