@@ -15,5 +15,5 @@ Este sistema de administración de medicamentos mejora la precisión y la seguri
 ## Tecnologías Utilizadas
 
 - Lenguaje de programación: Java (Andorid Studio)
-- Base de datos: [php MySQL, servicio gratuito de hosting web 000Webhost]
+- Base de datos: (php MySQL, servicio gratuito de hosting web 000Webhost [En caso de que el servicio de hosting haya expirado dentro de este repositorio se encuentra un archivo public_html.zip que contiene todos los php de las solicitudes a base de datos, y un archivo id22148604_pharmabot_db que es la copia de las tablas en base de datos]).
 
