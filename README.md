@@ -36,5 +36,11 @@ Para ingresar como uno de los pacientes, vaya a https://www.codigos-qr.com/gener
 - 1518
 - 1519
 - 5454
+  
+## Autores
+- Juan Esteban Martínez Sandoval
+- José Alejandro Ortega Benavides
+- Brayan Omar Vallejo Kouecomauy
+- Johnatan Dario Meneses Castrillón
 
 
