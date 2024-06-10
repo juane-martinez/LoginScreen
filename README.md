@@ -1,4 +1,4 @@
-# Sistema de Administración de Medicamentos
+# Sistema de Administración de Medicamentos "PharmaBot"
 
 ## Descripción
 
